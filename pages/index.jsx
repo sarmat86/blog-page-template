@@ -4,8 +4,8 @@ import ArticleTile from '../components/Article/ArticleTile/ArticleTile';
 export default function Home() {
   return (
     <Layout>
-      <ArticleTile />
-      <ArticleTile />
+      <ArticleTile articleId={'art1'}/>
+      <ArticleTile articleId={'art2'}/>
     </Layout>
   );
 }
