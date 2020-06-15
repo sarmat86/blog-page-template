@@ -6,14 +6,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
-import ShareIcon from '@material-ui/icons/Share';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
-import Popover from '@material-ui/core/Popover';
-import { useState } from 'react';
+
 import PropTypes from 'prop-types';
 import SocialShare from '../../SocialShare/SocialShare';
 
@@ -34,20 +32,9 @@ const useStyles = makeStyles({
   },
 });
 
-const ArticleTile = ({ articleId }) => {
+const ArticleTile = ({ articleId, articleUrl }) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleSocialClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleSocialClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
   return (
     <div className={classes.wrapper}>
       <Card className={classes.root}>
@@ -86,9 +73,7 @@ const ArticleTile = ({ articleId }) => {
               <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
               </IconButton>
-              <IconButton aria-label="share" aria-describedby={id} variant="contained" color="primary" onClick={handleSocialClick}>
-                <ShareIcon />
-              </IconButton>
+              <SocialShare url={articleUrl} />
             </Grid>
             <Grid item xs={6} className={classes.rightActions}>
               <Button size="small" color="primary">
@@ -96,24 +81,7 @@ const ArticleTile = ({ articleId }) => {
               </Button>
             </Grid>
           </Grid>
-          <div className="social-sharing">
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleSocialClose}
-              anchorOrigin={{
-                vertical: 'right',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-              }}
-            >
-              <SocialShare url={`https://test/articles/${articleId}`} round size={32} onClose={handleSocialClose} />
-            </Popover>
-          </div>
+
         </CardActions>
       </Card>
     </div>
@@ -126,6 +94,7 @@ ArticleTile.defaultProps = {
 
 ArticleTile.propTypes = {
   articleId: PropTypes.string.isRequired,
+  articleUrl: PropTypes.string.isRequired,
 };
 
 export default ArticleTile;
