@@ -39,21 +39,22 @@ const useStyles = makeStyles({
   },
 });
 
-const Article = ({ title, img, articleId, articleUrl }) => {
+const Article = ({
+  title, image, id, articleUrl, thumbnail, sources, content, rate, slug,
+}) => {
   const classes = useStyles();
-
   const disqusConfig = {
     url: 'http://localhost:3000',
-    identifier: 'article-id',
-    title: 'Title of Your Article',
+    identifier: id,
+    title,
   };
-  const disqusShortname = '';
+  const disqusShortname = process.env.NEXT_PUBLIC_DUPA;
   return (
     <div className={classes.wrapper}>
       <Card className={classes.root}>
         <CardHeader
           subheader="10.06.2020"
-          title={title}
+          title={rate}
           classes={{
             root: classes.cardHeader,
           }}
@@ -61,28 +62,21 @@ const Article = ({ title, img, articleId, articleUrl }) => {
 
         <CardMedia
           component="img"
-          alt="jakiś img"
+          alt={image.title ? image.title : title}
           height="300"
-          image="https://via.placeholder.com/912"
-          title="Contemplative Reptile"
+          image={image.url ? image.url : 'https://via.placeholder.com/912'}
+          title={image.title ? image.title : title}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            Illum sint cumque dolor molestias recusandae.
-            Ex quam ea ut tempora corporis magnam recusandae.
-            Excepturi ex voluptates voluptate, blanditiis dolores accusantium nobis?
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            Illum sint cumque dolor molestias recusandae.
-            Ex quam ea ut tempora corporis magnam recusandae.
-            Excepturi ex voluptates voluptate, blanditiis dolores accusantium nobis?
+            {content}
           </Typography>
           <Divider className={classes.divider} />
           <Typography variant="body1" color="textSecondary" component="p">
-            Sources
+            {sources}
           </Typography>
         </CardContent>
 
@@ -93,7 +87,7 @@ const Article = ({ title, img, articleId, articleUrl }) => {
               <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
               </IconButton>
-              <SocialShare url={articleUrl} />
+              <SocialShare url={slug} />
             </Grid>
           </Grid>
         </CardActions>
@@ -113,10 +107,10 @@ Article.defaultProps = {
 };
 
 Article.propTypes = {
-  articleId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  articleUrl: PropTypes.string.isRequired,
-  img: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
+  image: PropTypes.object.isRequired,
 };
 
 export default Article;
