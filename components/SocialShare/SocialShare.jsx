@@ -34,8 +34,6 @@ const useStyles = makeStyles({
 
 const SocialShare = ({ size, round, url }) => {
   const classes = useStyles();
-  console.log('url', url);
-  
   return (
     <div className={classes.socialShareWrapper}>
       <EmailShareButton url={url}>

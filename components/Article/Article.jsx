@@ -1,5 +1,4 @@
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -8,10 +7,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
 import ShareIcon from '@material-ui/icons/Share';
 import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
+import { DiscussionEmbed } from 'disqus-react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -31,10 +31,23 @@ const useStyles = makeStyles({
   divider: {
     margin: '10px 0',
   },
+  disqusWrapper: {
+    margin: '10px 0',
+    '& .striped-bar': {
+      display: 'none',
+    },
+  },
 });
 
-const Article = ({ title, img }) => {
+const Article = ({ title, img, articleId }) => {
   const classes = useStyles();
+
+  const disqusConfig = {
+    url: 'http://localhost:3000',
+    identifier: 'article-id',
+    title: 'Title of Your Article',
+  };
+  const disqusShortname = '';
   return (
     <div className={classes.wrapper}>
       <Card className={classes.root}>
@@ -87,8 +100,24 @@ const Article = ({ title, img }) => {
           </Grid>
         </CardActions>
       </Card>
+      <div className={classes.disqusWrapper}>
+        <DiscussionEmbed
+          shortname={disqusShortname}
+          config={disqusConfig}
+        />
+      </div>
     </div>
   );
+};
+
+Article.defaultProps = {
+
+};
+
+Article.propTypes = {
+  articleId: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
 };
 
 export default Article;

@@ -14,8 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 import Popover from '@material-ui/core/Popover';
 import { useState } from 'react';
-import SocialShare from '../../SocialShare/SocialShare';
 import PropTypes from 'prop-types';
+import SocialShare from '../../SocialShare/SocialShare';
 
 const useStyles = makeStyles({
   wrapper: {
