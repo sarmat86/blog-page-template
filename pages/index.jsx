@@ -12,7 +12,6 @@ const ALL_ARTICLES_QUERY = gql`
     shortDescription
     slug
     thumbnail{
-      id
       url
       title
     }
@@ -61,4 +60,4 @@ export async function getStaticProps() {
       data: response.data,
     },
   };
-}
+};

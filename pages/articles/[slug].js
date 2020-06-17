@@ -1,11 +1,12 @@
 import { gql } from 'apollo-boost';
+import PropTypes from 'prop-types';
 import Layout from '../../components/Layout/Layout';
 import Article from '../../components/Article/Article';
 import request from '../../lib/datocms';
 
 const ARTICLE_QUERY = gql`
-{
-    article(filter: {id: { eq: "5062334" }}){
+query articleQuery($slug: String) {
+    article(filter: {slug: { eq: $slug }}){
       id
       title
       shortDescription
@@ -13,16 +14,12 @@ const ARTICLE_QUERY = gql`
       slug
       sources
       thumbnail{
-        id
         url
         title
       }
       image{
-        id
         url
         title
-        filename
-        tags
       }
       rate
       createdAt
@@ -33,7 +30,6 @@ const ARTICLE_QUERY = gql`
       }
     }
 }`;
-
 const ARTICLES_PATH_QUERY = gql`
 {
   allArticles {
@@ -61,6 +57,11 @@ export default function Articles({ data }) {
     </Layout>
   );
 }
+
+Articles.propTypes = {
+  data: PropTypes.object.isRequired,
+};
+
 export async function getStaticPaths() {
   const response = await request({
     query: ARTICLES_PATH_QUERY,
@@ -69,7 +70,6 @@ export async function getStaticPaths() {
     {
       params: {
         slug: article.slug,
-        id: article.id,
       },
     }));
   return {
@@ -82,7 +82,7 @@ export async function getStaticProps({ params }) {
   const response = await request({
     query: ARTICLE_QUERY,
     variables: {
-      articleId: params.id,
+      slug: params.slug,
     },
   });
 

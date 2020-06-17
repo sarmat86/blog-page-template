@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import SocialShare from '../SocialShare/SocialShare';
+import paths from '../../src/paths';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -40,15 +41,15 @@ const useStyles = makeStyles({
 });
 
 const Article = ({
-  title, image, id, articleUrl, thumbnail, sources, content, rate, slug,
+  title, image, id, thumbnail, sources, content, rate, slug,
 }) => {
   const classes = useStyles();
   const disqusConfig = {
-    url: 'http://localhost:3000',
+    url: paths.root,
     identifier: id,
     title,
   };
-  const disqusShortname = process.env.NEXT_PUBLIC_DUPA;
+  const disqusShortname = process.env.NEXT_PUBLIC_DISQUS_SHORT_NAME;
   return (
     <div className={classes.wrapper}>
       <Card className={classes.root}>
@@ -64,7 +65,7 @@ const Article = ({
           component="img"
           alt={image.title ? image.title : title}
           height="300"
-          image={image.url ? image.url : 'https://via.placeholder.com/912'}
+          image={image.url ? image.url : thumbnail.url}
           title={image.title ? image.title : title}
         />
         <CardContent>
@@ -87,7 +88,7 @@ const Article = ({
               <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
               </IconButton>
-              <SocialShare url={slug} />
+              <SocialShare url={`${paths.root + paths.articles}/${slug}`} />
             </Grid>
           </Grid>
         </CardActions>
@@ -102,15 +103,21 @@ const Article = ({
   );
 };
 
-Article.defaultProps = {
-
-};
-
 Article.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
-  image: PropTypes.object.isRequired,
+  sources: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  rate: PropTypes.string.isRequired,
+  image: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+  thumbnail: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Article;
