@@ -21,7 +21,7 @@ const App = ({ Component, pageProps }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component { ...pageProps } />
+        <Component {...pageProps} />
       </ThemeProvider>
     </>
   );

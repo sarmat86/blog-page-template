@@ -60,12 +60,12 @@ const SocialShare = ({
         anchorEl={anchorEl}
         onClose={handleShareClose}
         anchorOrigin={{
-          vertical: 'right',
           horizontal: 'right',
+          vertical: 'center',
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: 30,
+          horizontal: 100,
         }}
       >
         <div className={classes.socialShareWrapper}>
