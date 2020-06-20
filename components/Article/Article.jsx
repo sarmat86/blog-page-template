@@ -63,10 +63,10 @@ const Article = ({
 
         <CardMedia
           component="img"
-          alt={image.title ? image.title : title}
+          alt={thumbnail.title ? thumbnail.title : title}
           height="300"
-          image={image.url ? image.url : thumbnail.url}
-          title={image.title ? image.title : title}
+          image={thumbnail.url ? thumbnail.url : thumbnail.url}
+          title={thumbnail.title ? thumbnail.title : title}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

@@ -3,8 +3,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
@@ -12,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import LikeSection from '../../LikeSection/LikeSection';
+
 import paths from '../../../src/paths';
 import SocialShare from '../../SocialShare/SocialShare';
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 });
 
 const ArticleTile = ({
-  title, shortDescription, slug, imgUrl, rate, createdAt,
+  id, title, shortDescription, slug, imgUrl, rate, createdAt, likesInfo,
 }) => {
   const classes = useStyles();
 
@@ -69,10 +69,8 @@ const ArticleTile = ({
         <CardActions disableSpacing>
           <Grid container spacing={2}>
             <Grid item xs={6} className={classes.leftActions}>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
               <SocialShare url={`/articles/${slug}`} />
+              <LikeSection articleId={id} likes={likesInfo.likes} dislikes={likesInfo.dislikes} />
             </Grid>
             <Grid item xs={6} className={classes.rightActions}>
               <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}`}>
@@ -90,14 +88,26 @@ const ArticleTile = ({
     </div>
   );
 };
-
+ArticleTile.defaultProps = {
+  likesInfo: {
+    id: '0',
+    likes: 0,
+    dislikes: 0,
+  },
+};
 ArticleTile.propTypes = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   shortDescription: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
   imgUrl: PropTypes.string.isRequired,
   rate: PropTypes.number.isRequired,
   createdAt: PropTypes.string.isRequired,
+  likesInfo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    dislikes: PropTypes.number.isRequired,
+  }),
 };
 
 export default ArticleTile;

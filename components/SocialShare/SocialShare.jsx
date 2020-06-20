@@ -51,7 +51,7 @@ const SocialShare = ({
   const id = open ? 'simple-popover' : undefined;
   return (
     <>
-      <IconButton aria-label="share" variant="contained" color="primary" onClick={handleShareClick}>
+      <IconButton aria-label="share" variant="contained" onClick={handleShareClick}>
         <ShareIcon />
       </IconButton>
       <Popover
@@ -60,7 +60,7 @@ const SocialShare = ({
         anchorEl={anchorEl}
         onClose={handleShareClose}
         anchorOrigin={{
-          horizontal: 'right',
+          horizontal: 100,
           vertical: 'center',
         }}
         transformOrigin={{
