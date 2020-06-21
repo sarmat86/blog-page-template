@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
 
 const LikeSection = ({ articleId, likes, dislikes }) => {
   const classes = useStyles();
-  const { articles, updateLikes } = useContext(Context);
+  const { articles, vote } = useContext(Context);
   const currArticle = articles ? articles.find((art) => art.id === articleId) : null;
 
   const handleClick = (type) => () => {
-    updateLikes(articleId, type);
+    vote(articleId, type);
   };
   return (
     <>
@@ -52,7 +52,7 @@ const LikeSection = ({ articleId, likes, dislikes }) => {
       >
         <IconButton
           aria-label="thumb down"
-          onClick={handleClick('dislikes')}
+          onClick={handleClick('dislike')}
           disabled={currArticle ? (currArticle.disliked || currArticle.liked) : false}
           className={clsx(classes.button, currArticle && currArticle.disliked && classes.clicked)}
         >
@@ -74,7 +74,7 @@ const LikeSection = ({ articleId, likes, dislikes }) => {
       >
         <IconButton
           aria-label="thumb down"
-          onClick={handleClick('likes')}
+          onClick={handleClick('like')}
           disabled={currArticle ? (currArticle.disliked || currArticle.liked) : false}
           className={clsx(classes.button, currArticle && currArticle.liked && classes.clicked)}
         >

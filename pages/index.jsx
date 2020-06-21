@@ -37,7 +37,7 @@ const Home = ({ data }) => {
     const query = {
       articles: articleIds,
     };
-    axios.post(process.env.NEXT_PUBLIC_FETCH_LIKES_URL, query)
+    axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles`, query)
       .then((response) => {
         updateArticles(response.data);
       })

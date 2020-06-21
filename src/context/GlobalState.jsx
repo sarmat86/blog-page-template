@@ -1,7 +1,8 @@
 import { useReducer } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import Context from './context';
-import articlesReduces, { UPDATE_ARTICLES, UPDATE_LIKES_COUNT } from './articlesReducer';
+import articlesReduces, { UPDATE_ARTICLES, UPDATE_LIKES, VOTE } from './articlesReducer';
 
 const GlobalState = ({ children }) => {
   const initialState = [];
@@ -14,19 +15,41 @@ const GlobalState = ({ children }) => {
       articles,
     });
   };
-  const updateLikes = (articleId, likeType) => {
+  const voteQuery = (articleId, likeType) => {
+    axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles/setlikes`, {
+      id: articleId,
+      action: likeType,
+    })
+      .then((response) => {
+        const { id, likes, dislikes } = response.data;
+        articleDispatch({
+          type: UPDATE_LIKES,
+          payload: {
+            id,
+            dislikes,
+            likes,
+          }
+        });
+      })
+      .catch((response) => {
+        console.log('Error occurred during vote data fetching.', response);
+      });
+  };
+
+  const vote = (articleId, likeType) => {
     articleDispatch({
-      type: UPDATE_LIKES_COUNT,
+      type: VOTE,
       articleId,
       likeType,
     });
+    voteQuery(articleId, likeType);
   };
 
   return (
     <Context.Provider value={{
       articles: articlesState,
       updateArticles,
-      updateLikes,
+      vote,
     }}
     >
       {children}
