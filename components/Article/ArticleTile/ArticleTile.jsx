@@ -69,8 +69,8 @@ const ArticleTile = ({
         <CardActions disableSpacing>
           <Grid container spacing={2}>
             <Grid item xs={6} className={classes.leftActions}>
-              <SocialShare url={`/articles/${slug}`} />
-              <LikeSection articleId={id} likes={likesInfo.likes} dislikes={likesInfo.dislikes} />
+              <SocialShare url={`${paths.root + paths.articles}/${slug}`} />
+              <LikeSection articleId={id} />
             </Grid>
             <Grid item xs={6} className={classes.rightActions}>
               <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}`}>

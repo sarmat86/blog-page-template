@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const LikeSection = ({ articleId, likes, dislikes }) => {
+const LikeSection = ({ articleId }) => {
   const classes = useStyles();
   const { articles, vote } = useContext(Context);
   const currArticle = articles ? articles.find((art) => art.id === articleId) : null;
@@ -87,14 +87,8 @@ const LikeSection = ({ articleId, likes, dislikes }) => {
   );
 };
 
-LikeSection.defaultProps = {
-  likes: 0,
-  dislikes: 0,
-};
-
 LikeSection.propTypes = {
-  likes: PropTypes.number,
-  dislikes: PropTypes.number,
+  articleId: PropTypes.string.isRequired,
 };
 
 export default LikeSection;
