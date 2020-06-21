@@ -2,8 +2,6 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import { DiscussionEmbed } from 'disqus-react';
@@ -13,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import SocialShare from '../SocialShare/SocialShare';
 import paths from '../../src/paths';
+import LikeSection from '../LikeSection/LikeSection';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -41,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 const Article = ({
-  title, image, id, thumbnail, sources, content, rate, slug,
+  title, image, createdAt, id, thumbnail, sources, content, rate, slug,
 }) => {
   const classes = useStyles();
   const disqusConfig = {
@@ -54,7 +53,7 @@ const Article = ({
     <div className={classes.wrapper}>
       <Card className={classes.root}>
         <CardHeader
-          subheader="10.06.2020"
+          subheader={createdAt}
           title={rate}
           classes={{
             root: classes.cardHeader,
@@ -63,10 +62,10 @@ const Article = ({
 
         <CardMedia
           component="img"
-          alt={image.title ? image.title : title}
+          alt={thumbnail.title ? thumbnail.title : title}
           height="300"
-          image={image.url ? image.url : thumbnail.url}
-          title={image.title ? image.title : title}
+          image={thumbnail.url ? thumbnail.url : thumbnail.url}
+          title={thumbnail.title ? thumbnail.title : title}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
@@ -83,14 +82,12 @@ const Article = ({
 
         <CardActions disableSpacing>
           <Grid container spacing={2}>
-            <Grid item xs={6} className={classes.leftActions} />
-            <Grid item xs={6} className={classes.rightActions}>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
+            <Grid item xs={12} className={classes.rightActions}>
               <SocialShare url={`${paths.root + paths.articles}/${slug}`} />
+              <LikeSection articleId={id} />
             </Grid>
           </Grid>
+
         </CardActions>
       </Card>
       <div className={classes.disqusWrapper}>
