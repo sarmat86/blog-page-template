@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const LikeSection = ({ articleId }) => {
   const classes = useStyles();
   const { articles, vote } = useContext(Context);
+
   const currArticle = articles ? articles.find((art) => art.id === articleId) : null;
 
   const handleClick = (type) => () => {

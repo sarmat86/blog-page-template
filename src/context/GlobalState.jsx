@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Context from './context';
@@ -7,10 +7,10 @@ import articlesReduces, { UPDATE_ARTICLES, UPDATE_LIKES, VOTE } from './articles
 const GlobalState = ({ children }) => {
   const initialState = [];
 
-  const [articlesState, articleDispatch] = useReducer(articlesReduces, initialState);
+  const [articlesState, articlesDispatch] = useReducer(articlesReduces, initialState);
 
   const updateArticles = (articles) => {
-    articleDispatch({
+    articlesDispatch({
       type: UPDATE_ARTICLES,
       articles,
     });
@@ -22,7 +22,7 @@ const GlobalState = ({ children }) => {
     })
       .then((response) => {
         const { id, likes, dislikes } = response.data;
-        articleDispatch({
+        articlesDispatch({
           type: UPDATE_LIKES,
           payload: {
             id,
@@ -37,13 +37,19 @@ const GlobalState = ({ children }) => {
   };
 
   const vote = (articleId, likeType) => {
-    articleDispatch({
+    articlesDispatch({
       type: VOTE,
       articleId,
       likeType,
     });
     voteQuery(articleId, likeType);
   };
+  useEffect(() => {
+    console.log('====================================');
+    console.log('state', articlesState);
+    console.log('====================================');
+
+  } )
 
   return (
     <Context.Provider value={{

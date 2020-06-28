@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 const SocialShare = ({
-  size, round, url,
+  size, round, url, horizontalPosition
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,7 +60,7 @@ const SocialShare = ({
         anchorEl={anchorEl}
         onClose={handleShareClose}
         anchorOrigin={{
-          horizontal: 100,
+          horizontal: horizontalPosition,
           vertical: 'center',
         }}
         transformOrigin={{
@@ -97,12 +97,14 @@ const SocialShare = ({
 SocialShare.defaultProps = {
   size: 32,
   round: true,
+  horizontalPosition: 100,
 };
 
 SocialShare.propTypes = {
   size: PropTypes.number,
   round: PropTypes.bool,
   url: PropTypes.string.isRequired,
+  horizontalPosition: PropTypes.number,
 };
 
 export default SocialShare;

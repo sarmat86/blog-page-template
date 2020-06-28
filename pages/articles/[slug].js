@@ -16,10 +16,14 @@ query articleQuery($slug: String) {
       thumbnail{
         url
         title
+        height
       }
-      image{
-        url
+  		video{
+        height
+        provider
         title
+        url
+        width
       }
       rate
       createdAt
@@ -48,10 +52,10 @@ export default function Articles({ data }) {
         content={data.content}
         slug={data.slug}
         thumbnail={data.thumbnail}
+        video={data.video}
         rate={data.rate}
         date={data.date}
-        createdAt={data.createdAt}
-        image={data.image}
+        createdAt={data.createdAt.substring(0, data.createdAt.indexOf('T'))}
         sources={data.sources}
       />
     </Layout>
