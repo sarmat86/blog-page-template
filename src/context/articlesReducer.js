@@ -21,6 +21,7 @@ const updateStorageVote = (newVote) => {
 };
 
 const updateArticles = (state, action) => {
+
   let storageVotes = localStorage.getItem(`${paths.root}-vote`);
   let updatedArticles = [];
   if (storageVotes) {

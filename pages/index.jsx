@@ -17,6 +17,7 @@ const ALL_ARTICLES_QUERY = gql`
     thumbnail{
       url
       title
+      height
     }
     rate
     createdAt
@@ -28,9 +29,7 @@ const ALL_ARTICLES_QUERY = gql`
 }`;
 
 const Home = ({ data }) => {
-  const { articles, updateArticles } = useContext(Context);
-  const likesInfo = articles;
-
+  const { updateArticles } = useContext(Context);
   const { allArticles } = data;
   const articleIds = allArticles.map((article) => article.id);
   useEffect(() => {
@@ -45,24 +44,18 @@ const Home = ({ data }) => {
         console.log('Error occurred during social-likes data fetching.', response);
       });
   }, []);
-  const articlesToRender = allArticles.map((article) => {
-    const likes = likesInfo ? likesInfo
-      .find((item) => item.id === article.id)
-      : null;
-    return (
-      <ArticleTile
-        key={article.id}
-        id={article.id}
-        title={article.title}
-        shortDescription={article.shortDescription}
-        slug={article.slug}
-        imgUrl={article.thumbnail.url}
-        rate={article.rate}
-        createdAt={article.createdAt}
-        likesInfo={likes || undefined}
-      />
-    );
-  });
+  const articlesToRender = allArticles.map((article) => (
+    <ArticleTile
+      key={article.id}
+      id={article.id}
+      title={article.title}
+      shortDescription={article.shortDescription}
+      slug={article.slug}
+      thumbnail={article.thumbnail[0]}
+      rate={article.rate}
+      createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
+    />
+  ));
   return (
     <Layout>
       {articlesToRender}
