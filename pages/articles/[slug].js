@@ -1,8 +1,10 @@
+import { useContext, useEffect } from 'react';
 import { gql } from 'apollo-boost';
 import PropTypes from 'prop-types';
 import Layout from '../../components/Layout/Layout';
 import Article from '../../components/Article/Article';
 import request from '../../lib/datocms';
+import Context from '../../src/context/context';
 
 const ARTICLE_QUERY = gql`
 query articleQuery($slug: String) {
@@ -13,6 +15,11 @@ query articleQuery($slug: String) {
       content
       slug
       sources
+      seo: _seoMetaTags {
+        attributes
+        content
+        tag
+      }
       thumbnail{
         url
         title
@@ -26,12 +33,14 @@ query articleQuery($slug: String) {
         width
       }
       rate
+      miracle
       createdAt
       date,
       tags{
         description,
         title,
       }
+      
     }
 }`;
 const ARTICLES_PATH_QUERY = gql`
@@ -42,9 +51,21 @@ const ARTICLES_PATH_QUERY = gql`
   }
 }`;
 
-export default function Articles({ data }) {
+const ArticlePage = ({ data }) => {
+  const { articlesVotesState, getVotesData } = useContext(Context);
+  const votesData = articlesVotesState.length
+    ? articlesVotesState.find((art) => art.id === data.id)
+    : null;
+  useEffect(() => {
+    if (!votesData) {
+      getVotesData([data.id]);
+    }
+  }, [votesData]);
   return (
-    <Layout>
+    <Layout
+      title={data.title}
+      seo={data.seo}
+    >
       <Article
         id={data.id}
         title={data.title}
@@ -57,14 +78,17 @@ export default function Articles({ data }) {
         date={data.date}
         createdAt={data.createdAt.substring(0, data.createdAt.indexOf('T'))}
         sources={data.sources}
+        miracle={data.miracle}
       />
     </Layout>
   );
 }
 
-Articles.propTypes = {
+ArticlePage.propTypes = {
   data: PropTypes.object.isRequired,
 };
+
+export default ArticlePage;
 
 export async function getStaticPaths() {
   const response = await request({

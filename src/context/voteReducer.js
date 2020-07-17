@@ -1,6 +1,6 @@
 import paths from '../paths';
 
-export const UPDATE_ARTICLES = 'UPDATE_ARTICLES';
+export const UPDATE_ARTICLES_VOTES = 'UPDATE_ARTICLES_VOTES';
 export const UPDATE_LIKES = 'UPDATE_LIKES_COUNT';
 export const VOTE = 'VOTE';
 
@@ -20,7 +20,7 @@ const updateStorageVote = (newVote) => {
   }
 };
 
-const updateArticles = (state, action) => {
+const updateArticlesVotes = (state, action) => {
 
   let storageVotes = localStorage.getItem(`${paths.root}-vote`);
   let updatedArticles = [];
@@ -90,7 +90,7 @@ const updateLikes = (state, action) => state.map((article) => {
 
 const articlesReducer = (state, action) => {
   switch (action.type) {
-    case UPDATE_ARTICLES: return updateArticles(state, action);
+    case UPDATE_ARTICLES_VOTES: return updateArticlesVotes(state, action);
     case VOTE: return vote(state, action);
     case UPDATE_LIKES: return updateLikes(state, action);
     default:
