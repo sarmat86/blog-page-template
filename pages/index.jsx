@@ -14,6 +14,11 @@ const ALL_ARTICLES_QUERY = gql`
     title
     shortDescription
     slug
+    seo: _seoMetaTags {
+      attributes
+      content
+      tag
+    }
     thumbnail{
       url
       title
@@ -29,20 +34,11 @@ const ALL_ARTICLES_QUERY = gql`
 }`;
 
 const Home = ({ data }) => {
-  const { updateArticles } = useContext(Context);
+  const { getVotesData } = useContext(Context);
   const { allArticles } = data;
   const articleIds = allArticles.map((article) => article.id);
   useEffect(() => {
-    const query = {
-      articles: articleIds,
-    };
-    axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles`, query)
-      .then((response) => {
-        updateArticles(response.data);
-      })
-      .catch((response) => {
-        console.log('Error occurred during social-likes data fetching.', response);
-      });
+    getVotesData(articleIds);
   }, []);
   const articlesToRender = allArticles.map((article) => (
     <ArticleTile

@@ -24,15 +24,15 @@ const useStyles = makeStyles((theme) => ({
   clicked: {
     color: `${theme.palette.primary.main}!important`,
   },
-
 }));
 
 const LikeSection = ({ articleId }) => {
   const classes = useStyles();
-  const { articles, vote } = useContext(Context);
 
-  const currArticle = articles ? articles.find((art) => art.id === articleId) : null;
-
+  const { articlesVotesState, vote } = useContext(Context);
+  const votesData = articlesVotesState.length
+    ? articlesVotesState.find((art) => art.id === articleId)
+    : null;
   const handleClick = (type) => () => {
     vote(articleId, type);
   };
@@ -44,7 +44,7 @@ const LikeSection = ({ articleId }) => {
         }}
         color="primary"
         overlap="circle"
-        badgeContent={currArticle ? currArticle.dislikes : 0}
+        badgeContent={votesData ? votesData.dislikes : 0}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -54,8 +54,8 @@ const LikeSection = ({ articleId }) => {
         <IconButton
           aria-label="thumb down"
           onClick={handleClick('dislike')}
-          disabled={currArticle ? (currArticle.disliked || currArticle.liked) : false}
-          className={clsx(classes.button, currArticle && currArticle.disliked && classes.clicked)}
+          disabled={votesData ? (votesData.disliked || votesData.liked) : false}
+          className={clsx(classes.button, votesData && votesData.disliked && classes.clicked)}
         >
           <ThumbDownAltIcon />
         </IconButton>
@@ -66,7 +66,7 @@ const LikeSection = ({ articleId }) => {
         }}
         color="primary"
         overlap="circle"
-        badgeContent={currArticle ? currArticle.likes : 0}
+        badgeContent={votesData ? votesData.likes : 0}
         max={9999}
         anchorOrigin={{
           vertical: 'bottom',
@@ -76,13 +76,12 @@ const LikeSection = ({ articleId }) => {
         <IconButton
           aria-label="thumb down"
           onClick={handleClick('like')}
-          disabled={currArticle ? (currArticle.disliked || currArticle.liked) : false}
-          className={clsx(classes.button, currArticle && currArticle.liked && classes.clicked)}
+          disabled={votesData ? (votesData.disliked || votesData.liked) : false}
+          className={clsx(classes.button, votesData && votesData.liked && classes.clicked)}
         >
           <ThumbUpAltIcon />
         </IconButton>
       </Badge>
-
     </>
 
   );

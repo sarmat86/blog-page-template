@@ -1,20 +1,34 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Context from './context';
-import articlesReduces, { UPDATE_ARTICLES, UPDATE_LIKES, VOTE } from './articlesReducer';
+import voteReducer, { UPDATE_ARTICLES_VOTES, UPDATE_LIKES, VOTE } from './voteReducer';
 
 const GlobalState = ({ children }) => {
   const initialState = [];
 
-  const [articlesState, articlesDispatch] = useReducer(articlesReduces, initialState);
+  const [articlesVotesState, articlesVoteDispatch] = useReducer(voteReducer, initialState);
 
-  const updateArticles = (articles) => {
-    articlesDispatch({
-      type: UPDATE_ARTICLES,
+  const updateArticlesVotes = (articles) => {
+    articlesVoteDispatch({
+      type: UPDATE_ARTICLES_VOTES,
       articles,
     });
   };
+
+  const getVotesData = (articleIdsArr) => {
+    const query = {
+      articles: articleIdsArr,
+    };
+    axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles`, query)
+      .then((response) => {
+        updateArticlesVotes(response.data);
+      })
+      .catch((response) => {
+        console.log('Error occurred during social-likes data fetching.', response);
+      });
+  };
+
   const voteQuery = (articleId, likeType) => {
     axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles/setlikes`, {
       id: articleId,
@@ -22,13 +36,13 @@ const GlobalState = ({ children }) => {
     })
       .then((response) => {
         const { id, likes, dislikes } = response.data;
-        articlesDispatch({
+        articlesVoteDispatch({
           type: UPDATE_LIKES,
           payload: {
             id,
             dislikes,
             likes,
-          }
+          },
         });
       })
       .catch((response) => {
@@ -37,25 +51,19 @@ const GlobalState = ({ children }) => {
   };
 
   const vote = (articleId, likeType) => {
-    articlesDispatch({
+    articlesVoteDispatch({
       type: VOTE,
       articleId,
       likeType,
     });
     voteQuery(articleId, likeType);
   };
-  useEffect(() => {
-    console.log('====================================');
-    console.log('state', articlesState);
-    console.log('====================================');
-
-  } )
-
   return (
     <Context.Provider value={{
-      articles: articlesState,
-      updateArticles,
+      articlesVotesState,
+      updateArticlesVotes,
       vote,
+      getVotesData,
     }}
     >
       {children}
