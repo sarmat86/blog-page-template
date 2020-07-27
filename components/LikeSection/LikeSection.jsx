@@ -44,28 +44,6 @@ const LikeSection = ({ articleId }) => {
         }}
         color="primary"
         overlap="circle"
-        badgeContent={votesData ? votesData.dislikes : 0}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        max={999}
-      >
-        <IconButton
-          aria-label="thumb down"
-          onClick={handleClick('dislike')}
-          disabled={votesData ? (votesData.disliked || votesData.liked) : false}
-          className={clsx(classes.button, votesData && votesData.disliked && classes.clicked)}
-        >
-          <ThumbDownAltIcon />
-        </IconButton>
-      </Badge>
-      <Badge
-        classes={{
-          badge: classes.root,
-        }}
-        color="primary"
-        overlap="circle"
         badgeContent={votesData ? votesData.likes : 0}
         max={9999}
         anchorOrigin={{
@@ -80,6 +58,28 @@ const LikeSection = ({ articleId }) => {
           className={clsx(classes.button, votesData && votesData.liked && classes.clicked)}
         >
           <ThumbUpAltIcon />
+        </IconButton>
+      </Badge>
+      <Badge
+        classes={{
+          badge: classes.root,
+        }}
+        color="primary"
+        overlap="circle"
+        badgeContent={votesData ? votesData.dislikes : 0}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        max={999}
+      >
+        <IconButton
+          aria-label="thumb down"
+          onClick={handleClick('dislike')}
+          disabled={votesData ? (votesData.disliked || votesData.liked) : false}
+          className={clsx(classes.button, votesData && votesData.disliked && classes.clicked)}
+        >
+          <ThumbDownAltIcon />
         </IconButton>
       </Badge>
     </>
