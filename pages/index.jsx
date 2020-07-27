@@ -1,7 +1,6 @@
 import { useEffect, useContext } from 'react';
 import { gql } from 'apollo-boost';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import Layout from '../components/Layout/Layout';
 import ArticleTile from '../components/Article/ArticleTile/ArticleTile';
 import request from '../lib/datocms';
@@ -40,18 +39,20 @@ const Home = ({ data }) => {
   useEffect(() => {
     getVotesData(articleIds);
   }, []);
-  const articlesToRender = allArticles.map((article) => (
-    <ArticleTile
-      key={article.id}
-      id={article.id}
-      title={article.title}
-      shortDescription={article.shortDescription}
-      slug={article.slug}
-      thumbnail={article.thumbnail[0]}
-      rate={article.rate}
-      createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
-    />
-  ));
+  const articlesToRender = allArticles
+    .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
+    .map((article) => (
+      <ArticleTile
+        key={article.id}
+        id={article.id}
+        title={article.title}
+        shortDescription={article.shortDescription}
+        slug={article.slug}
+        thumbnail={article.thumbnail}
+        rate={article.rate}
+        createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
+      />
+    ));
   return (
     <Layout>
       {articlesToRender}

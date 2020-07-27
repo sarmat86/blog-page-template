@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
 import { CommentCount } from 'disqus-react';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import ReactMarkdown from 'react-markdown';
+import Divider from '@material-ui/core/Divider';
 import LikeSection from '../../LikeSection/LikeSection';
 import paths from '../../../src/paths';
 import SocialShare from '../../SocialShare/SocialShare';
@@ -55,10 +57,58 @@ const useStyles = makeStyles((theme) => ({
   chatIcon: {
     marginRight: 10,
   },
+  seeMore: {
+    '&:hover': {
+      background: 'none',
+    },
+  },
+  content: {
+    '& .twitter-tweet.twitter-tweet-rendered': {
+      margin: '20px auto',
+    },
+    '& blockquote': {
+      fontStyle: 'italic',
+    },
+  },
+  divider: {
+    margin: '10px 0',
+  },
+  disqusWrapper: {
+    margin: '10px 0',
+    '& .striped-bar': {
+      display: 'none',
+    },
+  },
+  videoResponsive: {
+    overflow: 'hidden',
+    paddingBottom: '56.25%',
+    position: 'relative',
+    height: '0',
+    '& iframe': {
+      left: '0',
+      top: '0',
+      height: '100%',
+      width: '100%',
+      position: 'absolute',
+    },
+  },
+  media: {
+    minHeight: 320,
+  },
+  sources: {
+    '& a': {
+      display: 'block',
+      textDecoration: 'none',
+      margin: '10px 0',
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+    },
+  },
 }));
 
 const ArticleTile = ({
-  id, title, shortDescription, slug, thumbnail, rate, createdAt,
+  fullInfo, id, title, shortDescription, slug, thumbnail, createdAt, content, video, sources,
 }) => {
   const classes = useStyles();
   const upXs = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -67,63 +117,103 @@ const ArticleTile = ({
     identifier: id,
     title,
   };
+  const cardMedia = video ? (
+    <div className={classes.videoResponsive}>
+      <CardMedia
+        component="iframe"
+        src={video.url}
+        height={video.height}
+        width={video.width}
+        frameBorder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      />
+    </div>
+  ) : (
+    <div className={classes.media}>
+      <CardMedia
+        component="img"
+        alt={thumbnail[0].title || title}
+        title={thumbnail[0].title || title}
+        src={thumbnail[0].url}
+      />
+    </div>
+  );
+  const cardContent = (
+    <>
+      {cardMedia}
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="h2">
+          {title}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="div" className={classes.content}>
+          <ReactMarkdown escapeHtml={false} source={fullInfo ? content : shortDescription} />
+        </Typography>
+        {fullInfo && sources ? (
+          <>
+            <Divider className={classes.divider} />
+            <Typography gutterBottom variant="h5" component="h4">
+              Sources:
+            </Typography>
+            <div className={classes.sources}>
+              <ReactMarkdown escapeHtml={false} source={sources} />
+            </div>
+          </>
+        ) : null}
+      </CardContent>
+    </>
+  );
   return (
     <div className={classes.wrapper}>
       <Card className={classes.root}>
         <CardHeader
           subheader={createdAt}
-          title={rate ? `${rate} / 10` : null}
+          title="#category"
           classes={{
             content: classes.cardHeader,
             title: classes.title,
             subheader: classes.subheader,
           }}
         />
-        <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}`}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt={thumbnail.title}
-              image={thumbnail.url}
-              title={thumbnail.title}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {shortDescription}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Link>
+        {fullInfo ? cardContent : (
+          <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}`}>
+            <CardActionArea>
+              {cardContent}
+            </CardActionArea>
+          </Link>
+        )}
         <CardActions disableSpacing>
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <div className={classes.leftActions}>
                 <SocialShare url={`${paths.root + paths.articles}/${slug}`} />
                 <LikeSection articleId={id} />
-                { upXs ? (
-                  <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}#disqus_thread`}>
-                    <UiLink className={classes.comments}>
-                      <ChatBubbleOutlineIcon className={classes.chatIcon} />
-                      <CommentCount
-                        shortname={process.env.NEXT_PUBLIC_DISQUS_SHORT_NAME}
-                        config={disqusConfig}
-                      />
-                    </UiLink>
-                  </Link>
-                ) : null}
+                <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}#disqus_thread`}>
+                  <UiLink className={classes.comments}>
+                    <ChatBubbleOutlineIcon className={classes.chatIcon} />
+                    <CommentCount
+                      shortname={process.env.NEXT_PUBLIC_DISQUS_SHORT_NAME}
+                      config={disqusConfig}
+                    />
+                  </UiLink>
+                </Link>
               </div>
             </Grid>
             <Grid item xs={4} className={classes.rightActions}>
-              <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}`}>
-                <UiLink>
-                  <Button size="small" color="primary">
-                    Read more
-                  </Button>
-                </UiLink>
-              </Link>
+              {fullInfo ? null : (
+                <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}`}>
+                  <UiLink>
+                    <Button
+                      size="small"
+                      color="primary"
+                      classes={{
+                        root: classes.seeMore,
+                      }}
+                    >
+                      {upXs ? 'See more' : 'See'}
+                    </Button>
+                  </UiLink>
+                </Link>
+              ) }
             </Grid>
           </Grid>
 
@@ -133,24 +223,35 @@ const ArticleTile = ({
   );
 };
 ArticleTile.defaultProps = {
-  thumbnail: {
-    url: 'https://via.placeholder.com/912',
-    title: 'img placeholder',
-  },
-  rate: 0,
+  fullInfo: false,
+  shortDescription: '',
+  content: '',
+  video: '',
+  sources: '',
+
 };
 ArticleTile.propTypes = {
   id: PropTypes.string.isRequired,
+  fullInfo: PropTypes.bool,
   title: PropTypes.string.isRequired,
-  shortDescription: PropTypes.string.isRequired,
+  shortDescription: PropTypes.string,
   slug: PropTypes.string.isRequired,
-  thumbnail: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    height: PropTypes.number,
-  }),
-  rate: PropTypes.number,
+  thumbnail: PropTypes.arrayOf(
+    PropTypes.shape(
+      {
+        url: PropTypes.string.isRequired,
+        title: PropTypes.string,
+        height: PropTypes.number,
+      },
+    ),
+  ).isRequired,
   createdAt: PropTypes.string.isRequired,
+  content: PropTypes.string,
+  video: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+  sources: PropTypes.string,
 };
 
 export default ArticleTile;

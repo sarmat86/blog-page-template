@@ -32,10 +32,7 @@ query articleQuery($slug: String) {
         url
         width
       }
-      rate
-      miracle
       createdAt
-      date,
       tags{
         description,
         title,
@@ -67,18 +64,7 @@ const ArticlePage = ({ data }) => {
       seo={data.seo}
     >
       <Article
-        id={data.id}
-        title={data.title}
-        shortDescription={data.shortDescription}
-        content={data.content}
-        slug={data.slug}
-        thumbnail={data.thumbnail}
-        video={data.video}
-        rate={data.rate}
-        date={data.date}
-        createdAt={data.createdAt.substring(0, data.createdAt.indexOf('T'))}
-        sources={data.sources}
-        miracle={data.miracle}
+        data={data}
       />
     </Layout>
   );
