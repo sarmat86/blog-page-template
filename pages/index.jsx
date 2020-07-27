@@ -5,6 +5,7 @@ import Layout from '../components/Layout/Layout';
 import ArticleTile from '../components/Article/ArticleTile/ArticleTile';
 import request from '../lib/datocms';
 import Context from '../src/context/context';
+import TopHeader from '../components/Layout/TopHeader/TopHeader';
 
 const ALL_ARTICLES_QUERY = gql`
 {
@@ -57,6 +58,7 @@ const Home = ({ data }) => {
     <Layout
       title="lorem ipsum"
     >
+      <TopHeader />
       {articlesToRender}
     </Layout>
   );

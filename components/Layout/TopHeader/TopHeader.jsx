@@ -1,59 +1,103 @@
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from 'next/link';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
-  mainWrapper: {
-    flexDirection: 'row',
-    display: 'flex',
-    flex: '1',
+  top: {
+    borderBottom: '2px solid red',
   },
-  content: {
-    flex: '1',
+  accordion: {
+    background: 'none',
+    boxShadow: 'none',
+    '&:before': {
+      content: 'none',
+    },
+  },
+  summary: {
+    [theme.breakpoints.down('xs')]: {
+      padding: 0,
+      flexDirection: 'column',
+    },
+  },
+  summaryContent: {
+    [theme.breakpoints.down('xs')]: {
+      margin: 0,
+    },
   },
   description: {
     fontSize: '1.3rem',
     textAlign: 'center',
     margin: '10px auto',
-  },
-  mainTitle: {
-    margin: '70px auto 0',
-    borderBottom: `2px solid ${theme.palette.primary.main}`,
-    paddingBottom: 10,
-    [theme.breakpoints.up('md')]: {
-      margin: '100px auto 0',
+    fontWeight: 'normal',
+    [theme.breakpoints.down('xs')]: {
+      margin: '0',
+      fontSize: '1.1rem',
     },
-    cursor: 'pointer',
 
   },
-  title: {
-    fontSize: '2rem',
+  expandIcon: {
+    [theme.breakpoints.down('xs')]: {
+      margin: '0',
+    },
+  },
+  topMenu: {
+    padding: '10px 0',
+    textAlign: 'right',
+  },
+  link: {
+    '&:hover': {
+      background: 'none',
+    },
+  },
+  details: {
+    textAlign: 'justify',
+    textIndent: 20,
+    display: 'block',
+  },
+  text: {
     textAlign: 'center',
-    margin: '0 auto',
-    [theme.breakpoints.up('md')]: {
-      fontSize: '3rem',
-    },
-    '& span': {
-      color: theme.palette.primary.main,
-    },
+    fontSize: '1.2rem',
+    paddingTop: 10,
+    fontStyle: 'italic',
+    display: 'block',
   },
 }));
 
 const TopHeader = () => {
   const classes = useStyles();
+  const [topExpanded, setTopExpanded] = useState(false);
+  const onClickHandler = () => {
+    setTopExpanded(!topExpanded);
+  };
   return (
-    <div className={classes.mainTitle}>
-      <Link href="/">
-        <h1 className={classes.title}>
-          lorem
-          <span>ipsum</span>
-          header
-          <span>.</span>
-          pl
-        </h1>
-      </Link>
-      <p className={classes.description}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, consectetur voluptatem? Est eligendi fugiat quae odit fugit iure ea facilis. Alias quasi corrupti quos reprehenderit doloremque, nisi a culpa? Assumenda!
-      </p>
+    <div className={classes.top}>
+      <Accordion
+        expanded={topExpanded}
+        square
+        classes={{
+          root: classes.accordion,
+        }}
+      >
+        <AccordionSummary
+          onClick={onClickHandler}
+          expandIcon={<ExpandMoreIcon />}
+          classes={{
+            root: classes.summary,
+            content: classes.summaryContent,
+            expandIcon: classes.expandIcon,
+          }}
+        >
+          <h1 className={classes.description}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </h1>
+        </AccordionSummary>
+        <AccordionDetails className={classes.details}>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, perferendis! Minus quae enim maxime incidunt laborum dignissimos tempora aut cum ducimus aliquam voluptatem tenetur excepturi, hic animi vero, harum nisi.</p>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 };

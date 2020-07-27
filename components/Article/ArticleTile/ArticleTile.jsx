@@ -22,7 +22,10 @@ import SocialShare from '../../SocialShare/SocialShare';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    marginBottom: 20,
+    margin: '20px 0',
+    '& blockquote': {
+      margin: 0,
+    },
   },
   leftActions: {
     display: 'flex',
@@ -53,6 +56,14 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     marginLeft: 10,
     color: theme.palette.text.primary,
+    position: 'relative',
+    '& > span': {
+      position: 'absolute',
+      right: 0,
+      top: '90%',
+      fontSize: 12,
+      color: theme.palette.text.secondary,
+    },
   },
   chatIcon: {
     marginRight: 10,
@@ -142,9 +153,11 @@ const ArticleTile = ({
     <>
       {cardMedia}
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {title}
-        </Typography>
+        {fullInfo ? null : (
+          <Typography gutterBottom variant="h5" component="h2">
+            {title}
+          </Typography>
+        )}
         <Typography variant="body2" color="textSecondary" component="div" className={classes.content}>
           <ReactMarkdown escapeHtml={false} source={fullInfo ? content : shortDescription} />
         </Typography>

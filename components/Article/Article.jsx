@@ -25,6 +25,7 @@ const Article = ({ data }) => {
   };
   return (
     <div className={classes.wrapper}>
+      <h1>{data.title}</h1>
       <ArticleTile
         id={data.id}
         title={data.title}
