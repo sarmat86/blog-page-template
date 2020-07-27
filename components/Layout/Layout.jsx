@@ -1,10 +1,14 @@
 import Container from '@material-ui/core/Container';
 import Head from 'next/head';
 import { makeStyles } from '@material-ui/core/styles';
+import { useEffect } from 'react';
+import { renderMetaTags } from 'react-datocms';
 import PropTypes from 'prop-types';
 import TopHeader from './TopHeader/TopHeader';
 import Footer from './Footer/Footer';
 import TopBar from './TopBar/TopBar';
+import { initGA, logPageView } from '../../src/utils/analytics';
+import paths from '../../src/paths';
 
 const useStyles = makeStyles({
   content: {
@@ -15,15 +19,38 @@ const useStyles = makeStyles({
     position: 'relative',
   },
 });
-const Layout = ({ children }) => {
+const Layout = ({ children, title, seo }) => {
   const classes = useStyles();
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_GOOGLE_ANALITICS && !window.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
+  }, []);
   return (
     <>
       <Head>
         <title>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          {`${paths.root} - ${title}`}
         </title>
         <link rel="icon" href="/favicon2.ico" />
+        {seo ? renderMetaTags(seo) : (
+          <>
+            <meta
+              name="description"
+              content="lorem ipsum"
+            />
+            <meta
+              property="og:description"
+              content="lorem ipsum"
+            />
+            <meta
+              name="twitter:description"
+              content="lorem ipsum"
+            />
+          </>
+        )}
       </Head>
       <TopBar />
       <Container maxWidth="md">
@@ -38,9 +65,16 @@ const Layout = ({ children }) => {
     </>
   );
 };
+Layout.defaultProps = {
+  title: paths.root,
+};
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  title: PropTypes.string,
+  seo: PropTypes.arrayOf(
+    PropTypes.object,
+  ),
 };
 
 export default Layout;

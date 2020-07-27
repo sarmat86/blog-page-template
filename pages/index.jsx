@@ -54,7 +54,9 @@ const Home = ({ data }) => {
       />
     ));
   return (
-    <Layout>
+    <Layout
+      title="lorem ipsum"
+    >
       {articlesToRender}
     </Layout>
   );
