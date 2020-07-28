@@ -105,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     minHeight: 320,
+    [theme.breakpoints.down('xs')]: {
+      minHeight: 'auto',
+    },
   },
   sources: {
     '& a': {
@@ -119,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ArticleTile = ({
-  fullInfo, id, title, shortDescription, slug, thumbnail, createdAt, content, video, sources,
+  fullInfo, id, title, shortDescription, slug, thumbnails, createdAt, content, video, sources,
 }) => {
   const classes = useStyles();
   const upXs = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -143,9 +146,9 @@ const ArticleTile = ({
     <div className={classes.media}>
       <CardMedia
         component="img"
-        alt={thumbnail[0].title || title}
-        title={thumbnail[0].title || title}
-        src={thumbnail[0].url}
+        alt={thumbnails[0].title || title}
+        title={thumbnails[0].title || title}
+        src={thumbnails[0].url}
       />
     </div>
   );
@@ -249,7 +252,7 @@ ArticleTile.propTypes = {
   title: PropTypes.string.isRequired,
   shortDescription: PropTypes.string,
   slug: PropTypes.string.isRequired,
-  thumbnail: PropTypes.arrayOf(
+  thumbnails: PropTypes.arrayOf(
     PropTypes.shape(
       {
         url: PropTypes.string.isRequired,

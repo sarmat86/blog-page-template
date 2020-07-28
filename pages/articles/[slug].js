@@ -20,7 +20,7 @@ query articleQuery($slug: String) {
         content
         tag
       }
-      thumbnail{
+      thumbnails{
         url
         title
         height

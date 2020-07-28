@@ -19,12 +19,11 @@ const ALL_ARTICLES_QUERY = gql`
       content
       tag
     }
-    thumbnail{
+    thumbnails{
       url
       title
       height
     }
-    rate
     createdAt
     tags{
       description,
@@ -49,7 +48,7 @@ const Home = ({ data }) => {
         title={article.title}
         shortDescription={article.shortDescription}
         slug={article.slug}
-        thumbnail={article.thumbnail}
+        thumbnails={article.thumbnails}
         rate={article.rate}
         createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
       />

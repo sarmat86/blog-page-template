@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import Link from 'next/link';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Drawer from '../MenuDrawer/MenuDrawer';
 import paths from '../../../src/paths';
 
@@ -37,9 +38,15 @@ const useStyles = makeStyles((theme) => ({
   },
   gridItem: {
     width: '50%',
+    [theme.breakpoints.down('xs')]: {
+      width: '15%',
+    },
   },
   centralPlaceholder: {
     width: '50%',
+    [theme.breakpoints.down('xs')]: {
+      width: '85%',
+    },
   },
   title: {
     fontSize: '1.2rem',
@@ -60,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const classes = useStyles();
+  const upXs = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const onClickHandler = (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -92,27 +100,29 @@ const TopBar = () => {
                     </span>
                   </Link>
                 </div>
-                <div className={classes.gridItem}>
-                  <div className={classes.topSocial}>
-                    {paths.fb ? (
-                      <IconButton
-                        href={`${paths.fb}`}
-                        target="_blank"
-                      >
-                        <FacebookIcon />
-                      </IconButton>
-                    ) : null}
-                    {paths.insta ? (
-                      <IconButton
-                        href={`${paths.insta}`}
-                        target="_blank"
-                      >
-                        <InstagramIcon />
-                      </IconButton>
-                    ) : null}
+                {upXs ? (
+                  <div className={classes.gridItem}>
+                    <div className={classes.topSocial}>
+                      {paths.fb ? (
+                        <IconButton
+                          href={`${paths.fb}`}
+                          target="_blank"
+                        >
+                          <FacebookIcon />
+                        </IconButton>
+                      ) : null}
+                      {paths.insta ? (
+                        <IconButton
+                          href={`${paths.insta}`}
+                          target="_blank"
+                        >
+                          <InstagramIcon />
+                        </IconButton>
+                      ) : null}
 
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </Container>
           </Toolbar>
