@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import paths from '../../src/paths';
 import ArticleTile from './ArticleTile/ArticleTile';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
-    marginBottom: 20,
+    margin: '130px 0 20px',
+    [theme.breakpoints.down('xs')]: {
+      margin: '50px 0 20px',
+    },
   },
   disqusWrapper: {
     margin: '10px 0',
@@ -14,7 +17,7 @@ const useStyles = makeStyles({
       display: 'none',
     },
   },
-});
+}));
 
 const Article = ({ data }) => {
   const classes = useStyles();
@@ -25,12 +28,13 @@ const Article = ({ data }) => {
   };
   return (
     <div className={classes.wrapper}>
+      <h1>{data.title}</h1>
       <ArticleTile
         id={data.id}
         title={data.title}
         content={data.content}
         slug={data.slug}
-        thumbnail={data.thumbnail}
+        thumbnails={data.thumbnails}
         video={data.video}
         createdAt={data.createdAt.substring(0, data.createdAt.indexOf('T'))}
         sources={data.sources}
@@ -53,7 +57,7 @@ Article.propTypes = {
     sources: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
-    thumbnail: PropTypes.array.isRequired,
+    thumbnails: PropTypes.array.isRequired,
     video: PropTypes.object,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,

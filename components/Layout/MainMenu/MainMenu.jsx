@@ -6,6 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Link from 'next/link';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
 import paths from '../../../src/paths';
 
 const MainMenu = () => (
@@ -27,8 +29,29 @@ const MainMenu = () => (
           <ListItemText primary="Contact" />
         </ListItem>
       </Link>
+      <Divider />
+      {paths.fb ? (
+        <Link href={`${paths.contact}`}>
+          <ListItem button>
+            <ListItemIcon>
+              <FacebookIcon />
+            </ListItemIcon>
+            <ListItemText primary="Facebook" />
+          </ListItem>
+        </Link>
+      ) : null}
+      {paths.insta ? (
+        <Link href={`${paths.contact}`}>
+          <ListItem button>
+            <ListItemIcon>
+              <InstagramIcon />
+            </ListItemIcon>
+            <ListItemText primary="Instagram" />
+          </ListItem>
+        </Link>
+      ) : null}
     </List>
-    <Divider />
+
   </>
 );
 

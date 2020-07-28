@@ -22,7 +22,10 @@ import SocialShare from '../../SocialShare/SocialShare';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    marginBottom: 20,
+    margin: '20px 0',
+    '& blockquote': {
+      margin: 0,
+    },
   },
   leftActions: {
     display: 'flex',
@@ -53,6 +56,14 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     marginLeft: 10,
     color: theme.palette.text.primary,
+    position: 'relative',
+    '& > span': {
+      position: 'absolute',
+      right: 0,
+      top: '90%',
+      fontSize: 12,
+      color: theme.palette.text.secondary,
+    },
   },
   chatIcon: {
     marginRight: 10,
@@ -94,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     minHeight: 320,
+    [theme.breakpoints.down('xs')]: {
+      minHeight: 'auto',
+    },
   },
   sources: {
     '& a': {
@@ -108,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ArticleTile = ({
-  fullInfo, id, title, shortDescription, slug, thumbnail, createdAt, content, video, sources,
+  fullInfo, id, title, shortDescription, slug, thumbnails, createdAt, content, video, sources,
 }) => {
   const classes = useStyles();
   const upXs = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -132,9 +146,9 @@ const ArticleTile = ({
     <div className={classes.media}>
       <CardMedia
         component="img"
-        alt={thumbnail[0].title || title}
-        title={thumbnail[0].title || title}
-        src={thumbnail[0].url}
+        alt={thumbnails[0].title || title}
+        title={thumbnails[0].title || title}
+        src={thumbnails[0].url}
       />
     </div>
   );
@@ -142,9 +156,11 @@ const ArticleTile = ({
     <>
       {cardMedia}
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {title}
-        </Typography>
+        {fullInfo ? null : (
+          <Typography gutterBottom variant="h5" component="h2">
+            {title}
+          </Typography>
+        )}
         <Typography variant="body2" color="textSecondary" component="div" className={classes.content}>
           <ReactMarkdown escapeHtml={false} source={fullInfo ? content : shortDescription} />
         </Typography>
@@ -236,7 +252,7 @@ ArticleTile.propTypes = {
   title: PropTypes.string.isRequired,
   shortDescription: PropTypes.string,
   slug: PropTypes.string.isRequired,
-  thumbnail: PropTypes.arrayOf(
+  thumbnails: PropTypes.arrayOf(
     PropTypes.shape(
       {
         url: PropTypes.string.isRequired,

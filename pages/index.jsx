@@ -5,6 +5,7 @@ import Layout from '../components/Layout/Layout';
 import ArticleTile from '../components/Article/ArticleTile/ArticleTile';
 import request from '../lib/datocms';
 import Context from '../src/context/context';
+import TopHeader from '../components/Layout/TopHeader/TopHeader';
 
 const ALL_ARTICLES_QUERY = gql`
 {
@@ -18,12 +19,11 @@ const ALL_ARTICLES_QUERY = gql`
       content
       tag
     }
-    thumbnail{
+    thumbnails{
       url
       title
       height
     }
-    rate
     createdAt
     tags{
       description,
@@ -48,13 +48,16 @@ const Home = ({ data }) => {
         title={article.title}
         shortDescription={article.shortDescription}
         slug={article.slug}
-        thumbnail={article.thumbnail}
+        thumbnails={article.thumbnails}
         rate={article.rate}
         createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
       />
     ));
   return (
-    <Layout>
+    <Layout
+      title="lorem ipsum"
+    >
+      <TopHeader />
       {articlesToRender}
     </Layout>
   );
