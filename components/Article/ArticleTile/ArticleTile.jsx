@@ -19,6 +19,7 @@ import Divider from '@material-ui/core/Divider';
 import LikeSection from '../../LikeSection/LikeSection';
 import paths from '../../../src/paths';
 import SocialShare from '../../SocialShare/SocialShare';
+import Categories from './Categories/Categories';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -42,9 +43,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: '100%',
+    flexWrap: 'wrap',
   },
   title: {
     order: 2,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
   subheader: {
     order: 1,
@@ -122,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ArticleTile = ({
-  fullInfo, id, title, shortDescription, slug, thumbnails, createdAt, content, video, sources,
+  fullInfo, id, title, categories, activeCategory, shortDescription, slug, thumbnails, createdAt, content, video, sources,
 }) => {
   const classes = useStyles();
   const upXs = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -183,7 +188,12 @@ const ArticleTile = ({
       <Card className={classes.root}>
         <CardHeader
           subheader={createdAt}
-          title="#category"
+          title={(
+            <Categories
+              active={activeCategory}
+              categories={categories}
+            />
+          )}
           classes={{
             content: classes.cardHeader,
             title: classes.title,
@@ -232,7 +242,6 @@ const ArticleTile = ({
               ) }
             </Grid>
           </Grid>
-
         </CardActions>
       </Card>
     </div>
@@ -244,6 +253,7 @@ ArticleTile.defaultProps = {
   content: '',
   video: '',
   sources: '',
+  activeCategory: '',
 
 };
 ArticleTile.propTypes = {
@@ -263,11 +273,20 @@ ArticleTile.propTypes = {
   ).isRequired,
   createdAt: PropTypes.string.isRequired,
   content: PropTypes.string,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape(
+      {
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      },
+    ),
+  ).isRequired,
   video: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
   ]),
   sources: PropTypes.string,
+  activeCategory: PropTypes.string,
 };
 
 export default ArticleTile;

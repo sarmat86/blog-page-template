@@ -12,8 +12,13 @@ const ALL_ARTICLES_QUERY = gql`
   allArticles {
     id
     title
-    shortDescription
     slug
+    shortDescription
+    categories{
+      id
+      name
+    }
+    labels
     seo: _seoMetaTags {
       attributes
       content
@@ -50,6 +55,7 @@ const Home = ({ data }) => {
         slug={article.slug}
         thumbnails={article.thumbnails}
         rate={article.rate}
+        categories={article.categories}
         createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
       />
     ));

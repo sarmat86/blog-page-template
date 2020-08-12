@@ -11,34 +11,37 @@ query articleQuery($slug: String) {
     article(filter: {slug: { eq: $slug }}){
       id
       title
+      slug
+      categories{
+        name
+      }
+      labels
       shortDescription
       content
-      slug
       sources
-      seo: _seoMetaTags {
-        attributes
-        content
-        tag
-      }
       thumbnails{
-        url
-        title
-        height
-      }
-  		video{
-        height
-        provider
-        title
-        url
-        width
-      }
+          url
+          title
+          height
+        }
+      video{
+          height
+          provider
+          title
+          url
+          width
+        }
+      seo: _seoMetaTags {
+          attributes
+          content
+          tag
+        }
       createdAt
       tags{
-        description,
-        title,
-      }
-      
-    }
+          description,
+          title,
+        }
+  }
 }`;
 const ARTICLES_PATH_QUERY = gql`
 {
