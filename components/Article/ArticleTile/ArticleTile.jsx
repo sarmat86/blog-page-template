@@ -276,7 +276,7 @@ ArticleTile.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape(
       {
-        id: PropTypes.string.isRequired,
+        id: PropTypes.string,
         name: PropTypes.string.isRequired,
       },
     ),

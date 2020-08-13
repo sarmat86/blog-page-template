@@ -71,7 +71,7 @@ const ArticlePage = ({ data }) => {
       />
     </Layout>
   );
-}
+};
 
 ArticlePage.propTypes = {
   data: PropTypes.object.isRequired,

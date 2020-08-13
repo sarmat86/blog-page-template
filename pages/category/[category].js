@@ -1,10 +1,8 @@
-import { useContext, useEffect } from 'react';
 import { gql } from 'apollo-boost';
 import PropTypes from 'prop-types';
 import Layout from '../../components/Layout/Layout';
-import ArticleTile from '../../components/Article/ArticleTile/ArticleTile';
 import request from '../../lib/datocms';
-import Context from '../../src/context/context';
+import ArticleList from '../../components/ArticleList/ArticleList';
 
 const ARTICLES_QUERY = gql`
 query articleQuery($id: [ItemId]) {
@@ -68,43 +66,26 @@ query articleQuery($name: String) {
 }`;
 
 const CategoryArticles = ({ data, activeCategory }) => {
-  const { getVotesData } = useContext(Context);
-  const { allArticles } = data;
-  const articleIds = allArticles.map((article) => article.id);
-  useEffect(() => {
-    getVotesData(articleIds);
-  }, []);
-  const articlesToRender = allArticles
-    .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
-    .map((article) => (
-      <ArticleTile
-        key={article.id}
-        id={article.id}
-        title={article.title}
-        shortDescription={article.shortDescription}
-        slug={article.slug}
-        thumbnails={article.thumbnails}
-        rate={article.rate}
-        categories={article.categories}
-        activeCategory={activeCategory.id}
-        createdAt={article.createdAt.substring(0, article.createdAt.indexOf('T'))}
-      />
-    ));
   return (
     <Layout
       title={activeCategory.name}
+      seo={data.seo}
     >
       <h1 style={{textAlign: 'right'}}>
         #
         {activeCategory.name}
       </h1>
-      {articlesToRender}
+      <ArticleList
+        articles={data.allArticles}
+        activeCategory={activeCategory.id}
+      />
     </Layout>
   );
 };
 CategoryArticles.propTypes = {
   data: PropTypes.shape({
     allArticles: PropTypes.arrayOf(PropTypes.object.isRequired),
+    seo: PropTypes.arrayOf(PropTypes.object.isRequired),
   }).isRequired,
   activeCategory: PropTypes.shape({
     name: PropTypes.string.isRequired,

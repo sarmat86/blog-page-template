@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   activeCategory: {
-    border: '1px solid #000',
+    border: `1px solid ${theme.palette.primary.main}`,
     color: '#000',
   },
 }));
@@ -33,7 +33,7 @@ const Categories = ({ categories, active }) => {
   const categoriesToRender = categories
     .map((category) => (
       <Link
-        key={category.id}
+        key={category.name}
         href={`/category/${category.name}`}
       >
         <Chip
