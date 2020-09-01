@@ -5,6 +5,7 @@ import Layout from '../../components/Layout/Layout';
 import Article from '../../components/Article/Article';
 import request from '../../lib/datocms';
 import Context from '../../src/context/context';
+import getBlogCategories from '../../lib/getBlogCategories';
 
 const ARTICLE_QUERY = gql`
 query articleQuery($slug: String) {
@@ -51,6 +52,38 @@ const ARTICLES_PATH_QUERY = gql`
   }
 }`;
 
+export async function getStaticPaths() {
+  const response = await request({
+    query: ARTICLES_PATH_QUERY,
+  });
+  const paths = response.data.allArticles.map((article) => (
+    {
+      params: {
+        slug: article.slug,
+      },
+    }));
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const response = await request({
+    query: ARTICLE_QUERY,
+    variables: {
+      slug: params.slug,
+    },
+  });
+  const allCategories = await getBlogCategories();
+  return {
+    props: {
+      data: response.data.article,
+      allCategories,
+    },
+  };
+}
+
 const ArticlePage = ({ data }) => {
   const { articlesVotesState, getVotesData } = useContext(Context);
   const votesData = articlesVotesState.length
@@ -78,34 +111,3 @@ ArticlePage.propTypes = {
 };
 
 export default ArticlePage;
-
-export async function getStaticPaths() {
-  const response = await request({
-    query: ARTICLES_PATH_QUERY,
-  });
-  const paths = response.data.allArticles.map((article) => (
-    {
-      params: {
-        slug: article.slug,
-      },
-    }));
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const response = await request({
-    query: ARTICLE_QUERY,
-    variables: {
-      slug: params.slug,
-    },
-  });
-
-  return {
-    props: {
-      data: response.data.article,
-    },
-  };
-}

@@ -4,6 +4,7 @@ import Layout from '../components/Layout/Layout';
 import ArticleList from '../components/ArticleList/ArticleList';
 import request from '../lib/datocms';
 import TopHeader from '../components/Layout/TopHeader/TopHeader';
+import getBlogCategories from '../lib/getBlogCategories';
 
 const ALL_ARTICLES_QUERY = gql`
 {
@@ -35,18 +36,16 @@ const ALL_ARTICLES_QUERY = gql`
   }
 }`;
 
-const Home = ({ data }) => {
-  return (
-    <Layout
-      title="Main Page"
-    >
-      <TopHeader />
-      <ArticleList
-        articles={data.allArticles}
-      />
-    </Layout>
-  );
-};
+const Home = ({ data }) => (
+  <Layout
+    title="Main Page"
+  >
+    <TopHeader />
+    <ArticleList
+      articles={data.allArticles}
+    />
+  </Layout>
+);
 Home.propTypes = {
   data: PropTypes.shape({
     allArticles: PropTypes.arrayOf(PropTypes.object.isRequired),
@@ -55,12 +54,14 @@ Home.propTypes = {
 export default Home;
 
 export async function getStaticProps() {
+  const allCategories = await getBlogCategories(false);
   const response = await request({
     query: ALL_ARTICLES_QUERY,
   });
   return {
     props: {
       data: response.data,
+      allCategories,
     },
   };
 }
