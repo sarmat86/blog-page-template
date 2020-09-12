@@ -96,12 +96,12 @@ const TopBar = () => {
                 <div className={classes.centralPlaceholder}>
                   <Link href="/">
                     <span className={classes.title}>
-                      nextjs-blog-template.com
+                      nextjs-blog-template
                     </span>
                   </Link>
                 </div>
-                {upXs ? (
-                  <div className={classes.gridItem}>
+                <div className={classes.gridItem}>
+                  {upXs ? (
                     <div className={classes.topSocial}>
                       {paths.fb ? (
                         <IconButton
@@ -119,10 +119,10 @@ const TopBar = () => {
                           <InstagramIcon />
                         </IconButton>
                       ) : null}
-
                     </div>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
+
               </div>
             </Container>
           </Toolbar>

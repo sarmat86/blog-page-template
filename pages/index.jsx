@@ -8,7 +8,7 @@ import TopHeader from '../components/Layout/TopHeader/TopHeader';
 import getBlogCategories from '../lib/getBlogCategories';
 import Context from '../src/context/context';
 
-const ALL_ARTICLES_QUERY = gql`
+const MAIN_PAGE_QUERY = gql`
 {
   allArticles {
     id
@@ -36,12 +36,16 @@ const ALL_ARTICLES_QUERY = gql`
       title,
     }
   }
+  header{
+    label
+    content
+  }
 }`;
 
 export async function getStaticProps() {
   const allCategories = await getBlogCategories(false);
   const response = await request({
-    query: ALL_ARTICLES_QUERY,
+    query: MAIN_PAGE_QUERY,
   });
   return {
     props: {
@@ -63,7 +67,10 @@ const Home = ({ data, allCategories }) => {
       categories={allCategories}
       seo={data.seo}
     >
-      <TopHeader />
+      <TopHeader
+        label={data.header.label}
+        content={data.header.content}
+      />
       <ArticleList
         articles={data.allArticles}
       />
@@ -77,6 +84,10 @@ Home.propTypes = {
   data: PropTypes.shape({
     allArticles: PropTypes.arrayOf(PropTypes.object.isRequired),
     seo: PropTypes.arrayOf(PropTypes.object.isRequired),
+    header: PropTypes.shape({
+      content: PropTypes.string,
+      label: PropTypes.string,
+    }),
   }).isRequired,
   allCategories: PropTypes.arrayOf(PropTypes.object.isRequired),
 };

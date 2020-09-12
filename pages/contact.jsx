@@ -82,7 +82,7 @@ const Contact = () => {
   const classes = useStyles();
   return (
     <Layout>
-      <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+      <h1>Contact page</h1>
       { alert ? (
       <Alert 
       severity={alert[0]}

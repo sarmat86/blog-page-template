@@ -4,10 +4,11 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   top: {
-    borderBottom: '2px solid red',
+    borderBottom: `2px solid ${theme.palette.primary.main}`,
   },
   accordion: {
     background: 'none',
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TopHeader = () => {
+const TopHeader = ({ label, content }) => {
   const classes = useStyles();
   const [topExpanded, setTopExpanded] = useState(false);
   const onClickHandler = () => {
@@ -91,15 +92,19 @@ const TopHeader = () => {
           }}
         >
           <h1 className={classes.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            {label}
           </h1>
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, perferendis! Minus quae enim maxime incidunt laborum dignissimos tempora aut cum ducimus aliquam voluptatem tenetur excepturi, hic animi vero, harum nisi.</p>
+          <p>{content}</p>
         </AccordionDetails>
       </Accordion>
     </div>
   );
+};
+TopHeader.propTypes = {
+  content: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default TopHeader;
