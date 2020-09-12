@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
+import paths from '../../../../src/paths';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -34,7 +35,7 @@ const Categories = ({ categories, active }) => {
     .map((category) => (
       <Link
         key={category.name}
-        href={`/category/${category.name}`}
+        href={`${paths.category}/${category.name}`}
       >
         <Chip
           label={`${category.name}`}

@@ -151,9 +151,9 @@ const ArticleTile = ({
     <div className={classes.media}>
       <CardMedia
         component="img"
-        alt={thumbnails[0].title || title}
-        title={thumbnails[0].title || title}
-        src={thumbnails[0].url}
+        alt={thumbnails.length ? thumbnails[0].title : title}
+        title={thumbnails.length ? thumbnails[0].title : title}
+        src={thumbnails.length ? thumbnails[0].url : ''}
       />
     </div>
   );
@@ -254,6 +254,7 @@ ArticleTile.defaultProps = {
   video: '',
   sources: '',
   activeCategory: '',
+  thumbnails: [],
 
 };
 ArticleTile.propTypes = {
@@ -270,7 +271,7 @@ ArticleTile.propTypes = {
         height: PropTypes.number,
       },
     ),
-  ).isRequired,
+  ),
   createdAt: PropTypes.string.isRequired,
   content: PropTypes.string,
   categories: PropTypes.arrayOf(

@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Context from './context';
 import voteReducer, { UPDATE_ARTICLES_VOTES, UPDATE_LIKES, VOTE } from './voteReducer';
+import categoriesReducer, { UPDATE_CATEGORIES } from './categoriesReducer';
 
 const GlobalState = ({ children }) => {
   const initialState = [];
 
   const [articlesVotesState, articlesVoteDispatch] = useReducer(voteReducer, initialState);
+  const [categoriesState, categoriesDispatch] = useReducer(categoriesReducer, initialState);
 
+  const updateCategories = (categories) => {
+    categoriesDispatch({
+      type: UPDATE_CATEGORIES,
+      categories,
+    });
+  };
   const updateArticlesVotes = (articles) => {
     articlesVoteDispatch({
       type: UPDATE_ARTICLES_VOTES,
@@ -61,9 +69,11 @@ const GlobalState = ({ children }) => {
   return (
     <Context.Provider value={{
       articlesVotesState,
+      categoriesState,
       updateArticlesVotes,
       vote,
       getVotesData,
+      updateCategories,
     }}
     >
       {children}
