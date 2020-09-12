@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-import Router from 'next/router';
 import MainMenu from '../MainMenu/MainMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,17 +11,14 @@ const useStyles = makeStyles((theme) => ({
   },
   closeWrapper: {
     textAlign: 'right',
-    paddingRight: 10,
+    position: 'absolute',
+    zIndex: 999,
+    right: 10,
+    top: 0,
   },
 }));
 const MenuDrawer = ({ open, onClose }) => {
   const classes = useStyles();
-  useEffect(() => {
-    Router.events.on('routeChangeStart', onClose);
-    return () => {
-      Router.events.off('routeChangeStart');
-    };
-  }, []);
   return (
     <Drawer
       anchor="left"

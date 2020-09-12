@@ -5,40 +5,44 @@ import Layout from '../../components/Layout/Layout';
 import Article from '../../components/Article/Article';
 import request from '../../lib/datocms';
 import Context from '../../src/context/context';
+import getBlogCategories from '../../lib/getBlogCategories';
 
 const ARTICLE_QUERY = gql`
 query articleQuery($slug: String) {
     article(filter: {slug: { eq: $slug }}){
       id
       title
+      slug
+      categories{
+        name
+      }
+      labels
       shortDescription
       content
-      slug
       sources
-      seo: _seoMetaTags {
-        attributes
-        content
-        tag
-      }
       thumbnails{
-        url
-        title
-        height
-      }
-  		video{
-        height
-        provider
-        title
-        url
-        width
-      }
+          url
+          title
+          height
+        }
+      video{
+          height
+          provider
+          title
+          url
+          width
+        }
+      seo: _seoMetaTags {
+          attributes
+          content
+          tag
+        }
       createdAt
       tags{
-        description,
-        title,
-      }
-      
-    }
+          description,
+          title,
+        }
+  }
 }`;
 const ARTICLES_PATH_QUERY = gql`
 {
@@ -47,34 +51,6 @@ const ARTICLES_PATH_QUERY = gql`
     slug
   }
 }`;
-
-const ArticlePage = ({ data }) => {
-  const { articlesVotesState, getVotesData } = useContext(Context);
-  const votesData = articlesVotesState.length
-    ? articlesVotesState.find((art) => art.id === data.id)
-    : null;
-  useEffect(() => {
-    if (!votesData) {
-      getVotesData([data.id]);
-    }
-  }, [votesData]);
-  return (
-    <Layout
-      title={data.title}
-      seo={data.seo}
-    >
-      <Article
-        data={data}
-      />
-    </Layout>
-  );
-}
-
-ArticlePage.propTypes = {
-  data: PropTypes.object.isRequired,
-};
-
-export default ArticlePage;
 
 export async function getStaticPaths() {
   const response = await request({
@@ -99,10 +75,46 @@ export async function getStaticProps({ params }) {
       slug: params.slug,
     },
   });
-
+  const allCategories = await getBlogCategories();
   return {
     props: {
       data: response.data.article,
+      allCategories,
     },
   };
 }
+
+const ArticlePage = ({ data, allCategories }) => {
+  const { articlesVotesState, getVotesData } = useContext(Context);
+  const { updateCategories, categoriesState } = useContext(Context);
+  const votesData = articlesVotesState.length
+    ? articlesVotesState.find((art) => art.id === data.id)
+    : null;
+  useEffect(() => {
+    if (!categoriesState.length && allCategories.length) {
+      updateCategories(allCategories);
+    }
+    if (!votesData) {
+      getVotesData([data.id]);
+    }
+  }, [votesData]);
+  return (
+    <Layout
+      title={data.title}
+      seo={data.seo}
+    >
+      <Article
+        data={data}
+      />
+    </Layout>
+  );
+};
+ArticlePage.defaultProps = {
+  allCategories: [],
+};
+ArticlePage.propTypes = {
+  data: PropTypes.object.isRequired,
+  allCategories: PropTypes.arrayOf(PropTypes.object.isRequired),
+};
+
+export default ArticlePage;

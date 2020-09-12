@@ -38,6 +38,7 @@ const Article = ({ data }) => {
         video={data.video}
         createdAt={data.createdAt.substring(0, data.createdAt.indexOf('T'))}
         sources={data.sources}
+        categories={data.categories}
         fullInfo
       />
       <div id="disqus" className={classes.disqusWrapper}>
