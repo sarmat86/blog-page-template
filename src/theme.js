@@ -12,7 +12,7 @@ const theme = createMuiTheme({
   palette: {
     props: {
       MuiSvgIcon: {
-        htmlColor: 'red',
+        htmlColor: '#52845a',
       },
     },
     primary: {

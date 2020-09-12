@@ -20,6 +20,7 @@ import LikeSection from '../../LikeSection/LikeSection';
 import paths from '../../../src/paths';
 import SocialShare from '../../SocialShare/SocialShare';
 import Categories from './Categories/Categories';
+import Placeholder from '../../UX/Placeholder/Placeholder';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -149,12 +150,14 @@ const ArticleTile = ({
     </div>
   ) : (
     <div className={classes.media}>
-      <CardMedia
-        component="img"
-        alt={thumbnails.length ? thumbnails[0].title : title}
-        title={thumbnails.length ? thumbnails[0].title : title}
-        src={thumbnails.length ? thumbnails[0].url : ''}
-      />
+      {thumbnails.length ? (
+        <CardMedia
+          component="img"
+          alt={thumbnails[0].title}
+          title={thumbnails[0].title}
+          src={thumbnails[0].url}
+        />
+      ) : <Placeholder />}
     </div>
   );
   const cardContent = (
