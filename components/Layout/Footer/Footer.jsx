@@ -1,5 +1,7 @@
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -10,8 +12,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
     minHeight: '100px',
     textAlign: 'center',
+    padding: 20,
   },
 }));
 
@@ -22,11 +26,18 @@ const Footer = () => {
       <Container maxWidth="md">
         <div className={classes.footerContent}>
           <span>
-            footer
+            <strong>nextjs-blog-template</strong>
             <br />
             {' '}
             2020
           </span>
+          <div>
+            <IconButton
+              href="https://github.com/sarmat86/blog-page-template"
+            >
+              <GitHubIcon />
+            </IconButton>
+          </div>
         </div>
       </Container>
     </footer>

@@ -33,7 +33,7 @@ const Layout = ({ children, title, seo }) => {
         <title>
           {`${paths.root} - ${title}`}
         </title>
-        <link rel="icon" href="/favicon2.ico" />
+        <link rel="icon" href="/favicon.ico" />
         {seo ? renderMetaTags(seo) : (
           <>
             <meta
