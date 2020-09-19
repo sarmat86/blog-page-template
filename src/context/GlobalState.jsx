@@ -27,6 +27,7 @@ const GlobalState = ({ children }) => {
   const getVotesData = (articleIdsArr) => {
     const query = {
       articles: articleIdsArr,
+      page: 'blogArticles',
     };
     axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles`, query)
       .then((response) => {
@@ -41,6 +42,7 @@ const GlobalState = ({ children }) => {
     axios.post(`${process.env.NEXT_PUBLIC_FETCH_LIKES_URL}/articles/setlikes`, {
       id: articleId,
       action: likeType,
+      page: 'blogArticles',
     })
       .then((response) => {
         const { id, likes, dislikes } = response.data;
