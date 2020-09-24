@@ -1,14 +1,60 @@
 import { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
-import ArticleTile from '../Article/ArticleTile/ArticleTile';
+import { makeStyles } from '@material-ui/core/styles';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import IconButton from '@material-ui/core/IconButton';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Context from '../../src/context/context';
+import ArticleTile from '../Article/ArticleTile/ArticleTile';
+
+const useStyles = makeStyles((theme) => ({
+  paginationWrapper: {
+    '& ul.pagination': {
+      listStyle: 'none',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      padding: 0,
+      '& li': {
+        '& > a': {
+          outline: 'none',
+          width: 40,
+          height: 40,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          cursor: 'pointer',
+        },
+        '&:not(.disabled):hover': {
+          color: theme.palette.primary.main,
+        },
+        '&.active': {
+          fontWeight: 'bold',
+          color: theme.palette.primary.main,
+        },
+      },
+      '& li.previous, & li.next': {
+        '&.disabled': {
+          opacity: 0.5,
+          '& > a': {
+            cursor: 'default',
+          },
+        },
+      },
+    },
+  },
+}));
 
 const ArticleList = ({ allArticles, activeCategory }) => {
+  const classes = useStyles();
   const perPage = +process.env.NEXT_PUBLIC_ARTICLES_PER_PAGE;
   const [currentPage, setCurrentPage] = useState(0);
   const artFrom = currentPage * perPage;
-  const countPages = allArticles.length / perPage;
+  const countPages = Math.ceil(allArticles.length / perPage);
+
   const articles = allArticles
     .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
     .slice(artFrom, artFrom + perPage);
@@ -25,6 +71,7 @@ const ArticleList = ({ allArticles, activeCategory }) => {
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);
+    window.scrollTo(0, 0)
   };
 
   return (
@@ -45,19 +92,32 @@ const ArticleList = ({ allArticles, activeCategory }) => {
         />
       ))
 }
-      <ReactPaginate
-        previousLabel="previous"
-        nextLabel="next"
-        breakLabel="..."
-        breakClassName="break-me"
-        pageCount={countPages}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageClick}
-        containerClassName="pagination"
-        subContainerClassName="pages pagination"
-        activeClassName="active"
-      />
+      {' '}
+      {countPages > 1 ? (
+        <div className={classes.paginationWrapper}>
+          <ReactPaginate
+            previousLabel={(
+              <ArrowBackIosIcon />
+        )}
+            nextLabel={(
+              <ArrowForwardIosIcon />
+        )}
+            breakLabel={(
+              <MoreHorizIcon />
+        )}
+            breakClassName="break-me"
+            pageCount={countPages}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName="pagination"
+            pageClassName="pag-item"
+            subContainerClassName="pages pagination"
+            activeClassName="active"
+          />
+        </div>
+      ) : null}
+
     </div>
   );
 };
