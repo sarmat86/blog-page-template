@@ -103,7 +103,7 @@ const CategoryArticles = ({ data, activeCategory, allCategories }) => {
         {activeCategory.name}
       </h1>
       <ArticleList
-        articles={data.allArticles}
+        allArticles={data.allArticles}
         activeCategory={activeCategory.id}
       />
     </Layout>

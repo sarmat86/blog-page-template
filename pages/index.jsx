@@ -72,7 +72,7 @@ const Home = ({ data, allCategories }) => {
         content={data.header.content}
       />
       <ArticleList
-        articles={data.allArticles}
+        allArticles={data.allArticles}
       />
     </Layout>
   );
