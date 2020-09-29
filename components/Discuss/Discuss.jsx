@@ -25,7 +25,7 @@ const Discuss = ({ identifier, slug, title }) => {
     url: `${paths.root + paths.Discusss}/${slug}`,
     identifier,
     title,
-  }
+  };
   return (
     <div id="disqus" className={classes.disqusWrapper}>
       <DiscussionEmbed
@@ -42,4 +42,4 @@ Discuss.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default React.memo(Discuss);
+export default Discuss;

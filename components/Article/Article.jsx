@@ -47,10 +47,20 @@ Article.propTypes = {
     sources: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
-    thumbnails: PropTypes.array.isRequired,
-    video: PropTypes.object,
+    thumbnails: PropTypes.arrayOf(
+      PropTypes.object.isRequired,
+    ).isRequired,
+    video: PropTypes.shape({
+      height: PropTypes.number,
+      width: PropTypes.number,
+      provider: PropTypes.string,
+      title: PropTypes.string,
+      url: PropTypes.string,
+    }),
     createdAt: PropTypes.string.isRequired,
-    categories: PropTypes.array.isRequired,
+    categories: PropTypes.arrayOf(
+      PropTypes.object.isRequired,
+    ).isRequired,
   }).isRequired,
 };
 

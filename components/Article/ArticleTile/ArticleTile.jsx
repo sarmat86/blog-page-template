@@ -129,7 +129,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ArticleTile = ({
-  fullInfo, id, title, categories, activeCategory, shortDescription, slug, thumbnails, createdAt, content, video, sources,
+  fullInfo, id, title, categories,
+  activeCategory, shortDescription, slug, thumbnails, createdAt, content, video, sources,
 }) => {
   const classes = useStyles();
   const upXs = useMediaQuery((theme) => theme.breakpoints.up('sm'));

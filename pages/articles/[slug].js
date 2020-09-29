@@ -107,7 +107,15 @@ ArticlePage.defaultProps = {
   allCategories: [],
 };
 ArticlePage.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.shape({
+    allArticles: PropTypes.arrayOf(PropTypes.object.isRequired),
+    seo: PropTypes.arrayOf(PropTypes.object.isRequired),
+    header: PropTypes.shape({
+      content: PropTypes.string,
+      label: PropTypes.string,
+    }),
+    title: PropTypes.string,
+  }).isRequired,
   allCategories: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
 
