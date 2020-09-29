@@ -1,3 +1,4 @@
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -216,15 +217,17 @@ const ArticleTile = ({
               <div className={classes.leftActions}>
                 <SocialShare url={`${paths.root + paths.articles}/${slug}`} />
                 <LikeSection articleId={id} />
-                <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}#disqus_thread`}>
-                  <UiLink className={classes.comments}>
-                    <ChatBubbleOutlineIcon className={classes.chatIcon} />
-                    <CommentCount
-                      shortname={process.env.NEXT_PUBLIC_DISQUS_SHORT_NAME}
-                      config={disqusConfig}
-                    />
-                  </UiLink>
-                </Link>
+                {fullInfo ? null : (
+                  <Link href={`${paths.articles}/[slug]`} as={`${paths.articles}/${slug}#disqus_thread`}>
+                    <UiLink className={classes.comments}>
+                      <ChatBubbleOutlineIcon className={classes.chatIcon} />
+                      <CommentCount
+                        shortname={process.env.NEXT_PUBLIC_DISQUS_SHORT_NAME}
+                        config={disqusConfig}
+                      />
+                    </UiLink>
+                  </Link>
+                )}
               </div>
             </Grid>
             <Grid item xs={4} className={classes.rightActions}>
@@ -293,4 +296,4 @@ ArticleTile.propTypes = {
   activeCategory: PropTypes.string,
 };
 
-export default ArticleTile;
+export default React.memo(ArticleTile);

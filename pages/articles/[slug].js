@@ -85,19 +85,13 @@ export async function getStaticProps({ params }) {
 }
 
 const ArticlePage = ({ data, allCategories }) => {
-  const { articlesVotesState, getVotesData } = useContext(Context);
   const { updateCategories, categoriesState } = useContext(Context);
-  const votesData = articlesVotesState.length
-    ? articlesVotesState.find((art) => art.id === data.id)
-    : null;
   useEffect(() => {
     if (!categoriesState.length && allCategories.length) {
       updateCategories(allCategories);
     }
-    if (!votesData) {
-      getVotesData([data.id]);
-    }
-  }, [votesData]);
+  }, []);
+
   return (
     <Layout
       title={data.title}
