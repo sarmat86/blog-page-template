@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const Discuss = ({ identifier, slug, title }) => {
   const classes = useStyles();
   const disqusConfig = {
-    url: `${paths.root + paths.Discusss}/${slug}`,
+    url: `${paths.root}/${slug}`,
     identifier,
     title,
   };
