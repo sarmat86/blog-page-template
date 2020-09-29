@@ -1,8 +1,7 @@
-import { DiscussionEmbed } from 'disqus-react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import paths from '../../src/paths';
 import ArticleTile from './ArticleTile/ArticleTile';
+import Discuss from '../Discuss/Discuss';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -21,11 +20,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Article = ({ data }) => {
   const classes = useStyles();
-  const disqusConfig = {
-    url: `${paths.root + paths.articles}/${data.slug}`,
-    identifier: data.id,
-    title: data.title,
-  };
   return (
     <div className={classes.wrapper}>
       <h1>{data.title}</h1>
@@ -41,12 +35,7 @@ const Article = ({ data }) => {
         categories={data.categories}
         fullInfo
       />
-      <div id="disqus" className={classes.disqusWrapper}>
-        <DiscussionEmbed
-          shortname={process.env.NEXT_PUBLIC_DISQUS_SHORT_NAME}
-          config={disqusConfig}
-        />
-      </div>
+      <Discuss identifier={data.id} title={data.title} slug={data.slug} />
     </div>
   );
 };
@@ -58,9 +47,20 @@ Article.propTypes = {
     sources: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
-    thumbnails: PropTypes.array.isRequired,
-    video: PropTypes.object,
+    thumbnails: PropTypes.arrayOf(
+      PropTypes.object.isRequired,
+    ).isRequired,
+    video: PropTypes.shape({
+      height: PropTypes.number,
+      width: PropTypes.number,
+      provider: PropTypes.string,
+      title: PropTypes.string,
+      url: PropTypes.string,
+    }),
     createdAt: PropTypes.string.isRequired,
+    categories: PropTypes.arrayOf(
+      PropTypes.object.isRequired,
+    ).isRequired,
   }).isRequired,
 };
 

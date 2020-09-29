@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
@@ -28,14 +28,21 @@ const useStyles = makeStyles((theme) => ({
 
 const LikeSection = ({ articleId }) => {
   const classes = useStyles();
+  const { articlesVotesState, vote, getVotesData } = useContext(Context);
 
-  const { articlesVotesState, vote } = useContext(Context);
   const votesData = articlesVotesState.length
-    ? articlesVotesState.find((art) => art.id === articleId)
-    : null;
+    ? articlesVotesState.find((art) => art.id === articleId) : null;
+
+  useEffect(() => {
+    if (!votesData) {
+      getVotesData([articleId]);
+    }
+  }, []);
+
   const handleClick = (type) => () => {
     vote(articleId, type);
   };
+
   return (
     <>
       <Badge

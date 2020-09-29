@@ -15,7 +15,7 @@
     "apollo-boost": "^0.4.9",
     "axios": "^0.19.2",
     "clsx": "^1.1.1",
-    "disqus-react": "^1.0.9",
+    "disqus-react": "^1.0.10",
     "fontsource-roboto": "^2.2.6",
     "graphql": "^15.3.0",
     "next": "9.4.4",
@@ -27,15 +27,15 @@
     "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^5.7.2",
     "react-markdown": "^4.3.1",
-    "react-paginate": "^6.4.0",
-    "react-share": "^4.2.1"
+    "react-paginate": "^6.5.0",
+    "react-share": "^4.3.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.4",
+    "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^2.5.1"
   }
 }

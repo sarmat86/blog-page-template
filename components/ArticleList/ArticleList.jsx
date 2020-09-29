@@ -4,7 +4,6 @@ import ReactPaginate from 'react-paginate';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Context from '../../src/context/context';
 import ArticleTile from '../Article/ArticleTile/ArticleTile';
@@ -71,7 +70,7 @@ const ArticleList = ({ allArticles, activeCategory }) => {
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -120,6 +119,9 @@ const ArticleList = ({ allArticles, activeCategory }) => {
 
     </div>
   );
+};
+ArticleList.defaultProps = {
+  activeCategory: '',
 };
 ArticleList.propTypes = {
   allArticles: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
