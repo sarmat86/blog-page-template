@@ -1,5 +1,5 @@
 export default {
-  root: 'http://localhost:3000',
+  root: 'https://blog-page-template.vercel.app',
   articles: '/articles',
   contact: '/contact',
   category: '/category',
